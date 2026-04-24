@@ -27,7 +27,8 @@ Outil: Postman Collection Runner
 1. Le temps de réponse observé reste sous le seuil de 2000 ms dans les runs effectués.
 2. Les erreurs API sont fonctionnelles pour les cas négatifs testés, mais le format d’erreur reste minimal.
 
-## Prochaines améliorations
+## Prochaines améliorations — statut
 
-- Ajouter une validation de schéma JSON formelle (schema assertion complète).
-- Exécuter la collection via Newman en CI pour conserver un historique automatique.
+- ✅ Validation de schéma/contrat renforcée sur les réponses principales + erreurs négatives.
+- ✅ Exécution CI maintenue avec Newman via GitHub Actions, avec rapport JUnit en artifact.
+- 🔄 Contrat d’erreur API à enrichir côté fournisseur (`errorCode`, `traceId`) — gap suivi dans `BUG-REPORTS.md`.

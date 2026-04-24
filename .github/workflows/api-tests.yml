@@ -15,21 +15,22 @@ jobs:
   newman:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: api-testing-project
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Run Postman collection (Newman action)
+        uses: matt-ball/newman-action@v2
         with:
-          node-version: '20'
+          collection: api-testing-project/collection.json
+          environment: api-testing-project/environment.json
+          reporters: cli,junit
+          reporter-junit-export: newman/newman-results.xml
 
-      - name: Install Newman
-        run: npm install --global newman
-
-      - name: Run Postman collection
-        run: newman run collection.json -e environment.json --reporters cli
+      - name: Upload Newman report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: newman/newman-results.xml
+          if-no-files-found: warn

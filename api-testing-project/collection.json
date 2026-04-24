@@ -324,20 +324,73 @@
               "});",
               "",
               "const body = pm.response.json();",
+              "",
+              "pm.test('Error field exists and is a non-empty string', function () {",
+              "  pm.expect(body).to.have.property('error');",
+              "  pm.expect(body.error).to.be.a('string');",
+              "  pm.expect(body.error.trim().length).to.be.above(0);",
+              "});",
+              "",
               "pm.test('Error message is Missing password', function () {",
               "  pm.expect(body.error).to.eql('Missing password');",
               "});",
               "",
-              "const registerErrorSchema = {",
-              "  type: 'object',",
-              "  required: ['error'],",
-              "  properties: {",
-              "    error: { type: 'string' }",
-              "  }",
-              "};",
+              "pm.test('Current API does not expose detailed error contract fields yet', function () {",
+              "  pm.expect(body.errorCode, 'missing errorCode (known gap)').to.be.undefined;",
+              "  pm.expect(body.traceId, 'missing traceId (known gap)').to.be.undefined;",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "NEGATIVE - POST login without password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"peter@klaven\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 400', function () {",
+              "  pm.response.to.have.status(400);",
+              "});",
               "",
-              "pm.test('Error response matches JSON schema', function () {",
-              "  pm.response.to.have.jsonSchema(registerErrorSchema);",
+              "const body = pm.response.json();",
+              "pm.test('Error message is Missing password', function () {",
+              "  pm.expect(body.error).to.eql('Missing password');",
+              "});",
+              "",
+              "pm.test('Error field exists and is a non-empty string', function () {",
+              "  pm.expect(body).to.have.property('error');",
+              "  pm.expect(body.error).to.be.a('string');",
+              "  pm.expect(body.error.trim().length).to.be.above(0);",
               "});"
             ]
           }

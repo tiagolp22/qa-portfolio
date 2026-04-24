@@ -27,6 +27,11 @@
 - Diagnostic plus difficile côté client et support.
 - Logging/monitoring distribués moins efficaces sans `traceId`.
 
+### Suivi / plan d’action
+- **Statut:** Ouvert (priorité active)
+- **Action QA réalisée:** ajout de tests négatifs automatisés pour verrouiller le contrat d’erreur actuel minimal (`error`) et rendre visible l’absence de `errorCode`/`traceId`.
+- **Action attendue côté API:** enrichir la réponse d’erreur avec `errorCode` et `traceId`, puis mettre à jour les assertions pour les rendre obligatoires.
+
 ---
 
 ## BUG-API-002 — Documentation ambiguë sur les contraintes payload
