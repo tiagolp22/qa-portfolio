@@ -70,6 +70,12 @@ api-testing-project/
 newman run collection.json -e environment.json
 ```
 
+### Intégration continue (CI)
+
+Un workflow GitHub Actions exécute automatiquement la collection Postman avec Newman sur chaque `push` / `pull_request` impactant `api-testing-project/` (et en déclenchement manuel).
+
+Fichier: `.github/workflows/api-tests.yml`
+
 ## Valeur QA démontrée
 
 Ce projet montre:
