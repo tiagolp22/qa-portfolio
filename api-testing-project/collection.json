@@ -1,0 +1,250 @@
+{
+  "info": {
+    "_postman_id": "cd5fbaf4-13f8-4531-90f2-dad5f46e9e7f",
+    "name": "Projet 1 - API Testing Reqres",
+    "description": "Collection Postman pour démontrer des compétences QA API (positif + négatif).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET users (page 2)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users?page=2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "2"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response time is below 2000ms', function () {",
+              "  pm.expect(pm.response.responseTime).to.be.below(2000);",
+              "});",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('data is an array', function () {",
+              "  pm.expect(body.data).to.be.an('array');",
+              "});",
+              "",
+              "pm.test('first user has id and email', function () {",
+              "  pm.expect(body.data[0]).to.have.property('id');",
+              "  pm.expect(body.data[0]).to.have.property('email');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST user",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Tiago\",\n  \"job\": \"QA Analyst\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('Response has id and createdAt', function () {",
+              "  pm.expect(body).to.have.property('id');",
+              "  pm.expect(body).to.have.property('createdAt');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT update user",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Tiago\",\n  \"job\": \"Senior QA Analyst\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "2"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('Response has updatedAt', function () {",
+              "  pm.expect(body).to.have.property('updatedAt');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "DELETE user",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "2"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 204', function () {",
+              "  pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "NEGATIVE - GET unknown user",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/23",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "users",
+            "23"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 404', function () {",
+              "  pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "NEGATIVE - POST register without password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"eve.holt@reqres.in\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/register",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "register"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 400', function () {",
+              "  pm.response.to.have.status(400);",
+              "});",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('Error message is Missing password', function () {",
+              "  pm.expect(body.error).to.eql('Missing password');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
