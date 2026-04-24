@@ -45,6 +45,9 @@ api-testing-project/
 2. **POST /register** (payload incomplet)
    - Statut attendu `400`
    - Message d’erreur attendu: `Missing password`
+3. **POST /login** (payload incomplet)
+   - Statut attendu `400`
+   - Message d’erreur attendu: `Missing password`
 
 ## Types de validations implémentées
 
@@ -52,7 +55,8 @@ api-testing-project/
 - Vérification du **temps de réponse** (< 2000 ms)
 - Vérification de **champs clés** dans le JSON (`id`, `email`, `createdAt`, `updatedAt`)
 - Validation de **schéma JSON** sur les réponses principales (`GET /users`, `POST /users`, `PUT /users`, erreur `POST /register`)
-- Validation d’un message d’erreur pour un cas négatif
+- Validation d’un message d’erreur pour les cas négatifs
+- Vérification explicite du **gap de contrat d’erreur** (`errorCode`, `traceId` absents) pour documenter la dette API
 
 ## Bugs / observations QA (simulation)
 
@@ -74,7 +78,7 @@ newman run collection.json -e environment.json
 
 ### Intégration continue (CI)
 
-Un workflow GitHub Actions exécute automatiquement la collection Postman avec Newman sur chaque `push` / `pull_request` impactant `api-testing-project/` (et en déclenchement manuel).
+Un workflow GitHub Actions exécute automatiquement la collection Postman avec l’action Newman (`matt-ball/newman-action`) sur chaque `push` / `pull_request` impactant `api-testing-project/` (et en déclenchement manuel), avec export d’un rapport JUnit en artifact.
 
 Fichier: `.github/workflows/api-tests.yml`
 
