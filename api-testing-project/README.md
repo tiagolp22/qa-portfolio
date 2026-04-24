@@ -77,8 +77,3 @@ Ce projet montre:
 - la conception de scénarios de test API orientés risque;
 - la validation fonctionnelle + technique d’une API;
 - la documentation claire des résultats et limites.
-## Livrables complémentaires
-
-- `TEST-REPORT.md`: synthèse d’exécution de la collection.
-- `BUG-REPORTS.md`: exemple de rapports de bug API rédigés au format professionnel.
-
