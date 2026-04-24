@@ -10,7 +10,12 @@
       "name": "GET users (page 2)",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/users?page=2",
           "host": [
@@ -49,6 +54,36 @@
               "pm.test('first user has id and email', function () {",
               "  pm.expect(body.data[0]).to.have.property('id');",
               "  pm.expect(body.data[0]).to.have.property('email');",
+              "});",
+              "",
+              "const usersListSchema = {",
+              "  type: 'object',",
+              "  required: ['page', 'per_page', 'total', 'total_pages', 'data'],",
+              "  properties: {",
+              "    page: { type: 'integer' },",
+              "    per_page: { type: 'integer' },",
+              "    total: { type: 'integer' },",
+              "    total_pages: { type: 'integer' },",
+              "    data: {",
+              "      type: 'array',",
+              "      minItems: 1,",
+              "      items: {",
+              "        type: 'object',",
+              "        required: ['id', 'email', 'first_name', 'last_name', 'avatar'],",
+              "        properties: {",
+              "          id: { type: 'integer' },",
+              "          email: { type: 'string' },",
+              "          first_name: { type: 'string' },",
+              "          last_name: { type: 'string' },",
+              "          avatar: { type: 'string' }",
+              "        }",
+              "      }",
+              "    }",
+              "  }",
+              "};",
+              "",
+              "pm.test('Response matches users list JSON schema', function () {",
+              "  pm.response.to.have.jsonSchema(usersListSchema);",
               "});"
             ]
           }
@@ -63,6 +98,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
           }
         ],
         "body": {
@@ -93,6 +132,21 @@
               "pm.test('Response has id and createdAt', function () {",
               "  pm.expect(body).to.have.property('id');",
               "  pm.expect(body).to.have.property('createdAt');",
+              "});",
+              "",
+              "const createUserSchema = {",
+              "  type: 'object',",
+              "  required: ['name', 'job', 'id', 'createdAt'],",
+              "  properties: {",
+              "    name: { type: 'string' },",
+              "    job: { type: 'string' },",
+              "    id: { type: 'string' },",
+              "    createdAt: { type: 'string' }",
+              "  }",
+              "};",
+              "",
+              "pm.test('Response matches create user JSON schema', function () {",
+              "  pm.response.to.have.jsonSchema(createUserSchema);",
               "});"
             ]
           }
@@ -107,6 +161,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
           }
         ],
         "body": {
@@ -137,6 +195,20 @@
               "const body = pm.response.json();",
               "pm.test('Response has updatedAt', function () {",
               "  pm.expect(body).to.have.property('updatedAt');",
+              "});",
+              "",
+              "const updateUserSchema = {",
+              "  type: 'object',",
+              "  required: ['name', 'job', 'updatedAt'],",
+              "  properties: {",
+              "    name: { type: 'string' },",
+              "    job: { type: 'string' },",
+              "    updatedAt: { type: 'string' }",
+              "  }",
+              "};",
+              "",
+              "pm.test('Response matches update user JSON schema', function () {",
+              "  pm.response.to.have.jsonSchema(updateUserSchema);",
               "});"
             ]
           }
@@ -147,7 +219,12 @@
       "name": "DELETE user",
       "request": {
         "method": "DELETE",
-        "header": [],
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/users/2",
           "host": [
@@ -177,7 +254,12 @@
       "name": "NEGATIVE - GET unknown user",
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
+          }
+        ],
         "url": {
           "raw": "{{baseUrl}}/users/23",
           "host": [
@@ -211,6 +293,10 @@
           {
             "key": "Content-Type",
             "value": "application/json"
+          },
+          {
+            "key": "x-api-key",
+            "value": "{{apiKey}}"
           }
         ],
         "body": {
@@ -240,6 +326,18 @@
               "const body = pm.response.json();",
               "pm.test('Error message is Missing password', function () {",
               "  pm.expect(body.error).to.eql('Missing password');",
+              "});",
+              "",
+              "const registerErrorSchema = {",
+              "  type: 'object',",
+              "  required: ['error'],",
+              "  properties: {",
+              "    error: { type: 'string' }",
+              "  }",
+              "};",
+              "",
+              "pm.test('Error response matches JSON schema', function () {",
+              "  pm.response.to.have.jsonSchema(registerErrorSchema);",
               "});"
             ]
           }

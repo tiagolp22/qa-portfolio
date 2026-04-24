@@ -6,6 +6,11 @@
       "key": "baseUrl",
       "value": "https://reqres.in/api",
       "enabled": true
+    },
+    {
+      "key": "apiKey",
+      "value": "reqres-free-v1",
+      "enabled": true
     }
   ],
   "_postman_variable_scope": "environment",
