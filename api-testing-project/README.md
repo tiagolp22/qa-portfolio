@@ -51,6 +51,7 @@ api-testing-project/
 - Vérification du **status code**
 - Vérification du **temps de réponse** (< 2000 ms)
 - Vérification de **champs clés** dans le JSON (`id`, `email`, `createdAt`, `updatedAt`)
+- Validation de **schéma JSON** sur les réponses principales (`GET /users`, `POST /users`, `PUT /users`, erreur `POST /register`)
 - Validation d’un message d’erreur pour un cas négatif
 
 ## Bugs / observations QA (simulation)
@@ -62,7 +63,8 @@ api-testing-project/
 
 1. Importer `collection.json` dans Postman.
 2. Importer `environment.json` puis sélectionner l’environnement.
-3. Lancer la collection (Collection Runner) ou Newman.
+3. Vérifier que la variable `apiKey` est présente (valeur par défaut: `reqres-free-v1`).
+4. Lancer la collection (Collection Runner) ou Newman.
 
 ### Exécution avec Newman (optionnel)
 
