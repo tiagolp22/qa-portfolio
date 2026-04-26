@@ -82,6 +82,10 @@ Un workflow GitHub Actions exécute automatiquement la collection Postman avec l
 
 Fichier: `.github/workflows/api-tests.yml`
 
+## Support entretien / interview
+
+- Voir `INTERVIEW-NOTES.md` pour un script d'explication du projet, les décisions QA clés et des réponses prêtes pour entretien.
+
 ## Valeur QA démontrée
 
 Ce projet montre:
