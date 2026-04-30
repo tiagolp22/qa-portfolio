@@ -390,5 +390,24 @@
         }
       ]
     }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const apiKey = pm.environment.get('api_key');",
+          "",
+          "pm.test('api_key environment variable is configured', function () {",
+          "  pm.expect(apiKey, 'Missing api_key environment variable').to.be.a('string').and.not.empty;",
+          "});",
+          "",
+          "if (apiKey) {",
+          "  pm.request.headers.upsert({ key: 'x-api-key', value: apiKey });",
+          "}"
+        ]
+      }
+    }
   ]
 }

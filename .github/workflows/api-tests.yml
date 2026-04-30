@@ -33,10 +33,13 @@ jobs:
         run: npm install --global newman
 
       - name: Run API tests and export JUnit report
+        env:
+          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
         run: |
           mkdir -p test-results
           newman run collection.json \
             -e environment.json \
+            --env-var "api_key=$REQRES_API_KEY" \
             --reporters cli,junit \
             --reporter-junit-export test-results/newman-results.xml
 
