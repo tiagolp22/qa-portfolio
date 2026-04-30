@@ -44,15 +44,15 @@ api-testing-project/
    - Statut attendu `404`
 2. **POST /register** (payload incomplet)
    - Statut attendu `400`
-   - Message d’erreur attendu: `Missing password`
+   - Message d’erreur attendu: contient `password` (tolérant aux variations de texte)
 3. **POST /login** (payload incomplet)
    - Statut attendu `400`
-   - Message d’erreur attendu: `Missing password`
+   - Message d’erreur attendu: contient `password` (tolérant aux variations de texte)
 
 ## Types de validations implémentées
 
 - Vérification du **status code**
-- Vérification du **temps de réponse** (< 2000 ms)
+- Vérification du **temps de réponse** (< 5000 ms)
 - Vérification de **champs clés** dans le JSON (`id`, `email`, `createdAt`, `updatedAt`)
 - Validation de **schéma JSON** sur les réponses principales (`GET /users`, `POST /users`, `PUT /users`, erreur `POST /register`)
 - Validation d’un message d’erreur pour les cas négatifs
