@@ -78,7 +78,7 @@ newman run collection.json -e environment.json
 
 ### Intégration continue (CI)
 
-Un workflow GitHub Actions exécute automatiquement la collection Postman via Newman (installation Node.js + Newman CLI) sur chaque `push` / `pull_request` impactant `api-testing-project/` (et en déclenchement manuel), avec export d’un rapport JUnit en artifact.
+Un workflow GitHub Actions exécute automatiquement la collection Postman via l’image Docker officielle `postman/newman` sur chaque `push` / `pull_request` impactant `api-testing-project/` (et en déclenchement manuel), avec export d’un rapport JUnit en artifact.
 
 Fichier: `.github/workflows/api-tests.yml`
 
@@ -90,7 +90,7 @@ Si votre pipeline échoue avec l’erreur ci-dessous:
 Unable to resolve action `matt-ball/newman-action@v2`
 ```
 
-la version `v2` de cette action n’est pas résoluble. Ce projet utilise désormais une approche plus robuste: installation de Node.js et exécution directe de `newman` en CLI dans le workflow (`.github/workflows/api-tests.yml`).
+la version `v2` de cette action n’est pas résoluble. Ce projet utilise désormais une approche plus robuste: exécution via l’image Docker officielle `postman/newman` dans le workflow (`.github/workflows/api-tests.yml`).
 
 
 ## Support entretien / interview
