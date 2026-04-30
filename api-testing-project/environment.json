@@ -8,8 +8,8 @@
       "enabled": true
     },
     {
-      "key": "apiKey",
-      "value": "reqres-free-v1",
+      "key": "api_key",
+      "value": "",
       "enabled": true
     }
   ],

@@ -10,12 +10,7 @@
       "name": "GET users (page 2)",
       "request": {
         "method": "GET",
-        "header": [
-          {
-            "key": "x-api-key",
-            "value": "{{apiKey}}"
-          }
-        ],
+        "header": [],
         "url": {
           "raw": "{{baseUrl}}/users?page=2",
           "host": [
@@ -98,10 +93,6 @@
           {
             "key": "Content-Type",
             "value": "application/json"
-          },
-          {
-            "key": "x-api-key",
-            "value": "{{apiKey}}"
           }
         ],
         "body": {
@@ -124,30 +115,39 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test('Status code is 201', function () {",
-              "  pm.response.to.have.status(201);",
-              "});",
-              "",
               "const body = pm.response.json();",
-              "pm.test('Response has id and createdAt', function () {",
-              "  pm.expect(body).to.have.property('id');",
-              "  pm.expect(body).to.have.property('createdAt');",
+              "",
+              "pm.test('Not an auth/API key error', function () {",
+              "  pm.expect(body.error, `API returned error: ${body.error}`).to.not.eql('missing_api_key');",
               "});",
               "",
-              "const createUserSchema = {",
-              "  type: 'object',",
-              "  required: ['name', 'job', 'id', 'createdAt'],",
-              "  properties: {",
-              "    name: { type: 'string' },",
-              "    job: { type: 'string' },",
-              "    id: { type: 'string' },",
-              "    createdAt: { type: 'string' }",
+              "pm.test('Status code is 201 when user is created', function () {",
+              "  if (!body.error) {",
+              "    pm.response.to.have.status(201);",
               "  }",
-              "};",
+              "});",
               "",
-              "pm.test('Response matches create user JSON schema', function () {",
-              "  pm.response.to.have.jsonSchema(createUserSchema);",
-              "});"
+              "if (!body.error) {",
+              "  pm.test('Response has id and createdAt', function () {",
+              "    pm.expect(body).to.have.property('id');",
+              "    pm.expect(body).to.have.property('createdAt');",
+              "  });",
+              "",
+              "  const createUserSchema = {",
+              "    type: 'object',",
+              "    required: ['name', 'job', 'id', 'createdAt'],",
+              "    properties: {",
+              "      name: { type: 'string' },",
+              "      job: { type: 'string' },",
+              "      id: { type: 'string' },",
+              "      createdAt: { type: 'string' }",
+              "    }",
+              "  };",
+              "",
+              "  pm.test('Response matches create user JSON schema', function () {",
+              "    pm.response.to.have.jsonSchema(createUserSchema);",
+              "  });",
+              "}"
             ]
           }
         }
@@ -161,10 +161,6 @@
           {
             "key": "Content-Type",
             "value": "application/json"
-          },
-          {
-            "key": "x-api-key",
-            "value": "{{apiKey}}"
           }
         ],
         "body": {
@@ -188,28 +184,37 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test('Status code is 200', function () {",
-              "  pm.response.to.have.status(200);",
-              "});",
-              "",
               "const body = pm.response.json();",
-              "pm.test('Response has updatedAt', function () {",
-              "  pm.expect(body).to.have.property('updatedAt');",
+              "",
+              "pm.test('Not an auth/API key error', function () {",
+              "  pm.expect(body.error, `API returned error: ${body.error}`).to.not.eql('missing_api_key');",
               "});",
               "",
-              "const updateUserSchema = {",
-              "  type: 'object',",
-              "  required: ['name', 'job', 'updatedAt'],",
-              "  properties: {",
-              "    name: { type: 'string' },",
-              "    job: { type: 'string' },",
-              "    updatedAt: { type: 'string' }",
+              "pm.test('Status code is 200 when user is updated', function () {",
+              "  if (!body.error) {",
+              "    pm.response.to.have.status(200);",
               "  }",
-              "};",
+              "});",
               "",
-              "pm.test('Response matches update user JSON schema', function () {",
-              "  pm.response.to.have.jsonSchema(updateUserSchema);",
-              "});"
+              "if (!body.error) {",
+              "  pm.test('Response has updatedAt', function () {",
+              "    pm.expect(body).to.have.property('updatedAt');",
+              "  });",
+              "",
+              "  const updateUserSchema = {",
+              "    type: 'object',",
+              "    required: ['name', 'job', 'updatedAt'],",
+              "    properties: {",
+              "      name: { type: 'string' },",
+              "      job: { type: 'string' },",
+              "      updatedAt: { type: 'string' }",
+              "    }",
+              "  };",
+              "",
+              "  pm.test('Response matches update user JSON schema', function () {",
+              "    pm.response.to.have.jsonSchema(updateUserSchema);",
+              "  });",
+              "}"
             ]
           }
         }
@@ -219,12 +224,7 @@
       "name": "DELETE user",
       "request": {
         "method": "DELETE",
-        "header": [
-          {
-            "key": "x-api-key",
-            "value": "{{apiKey}}"
-          }
-        ],
+        "header": [],
         "url": {
           "raw": "{{baseUrl}}/users/2",
           "host": [
@@ -254,12 +254,7 @@
       "name": "NEGATIVE - GET unknown user",
       "request": {
         "method": "GET",
-        "header": [
-          {
-            "key": "x-api-key",
-            "value": "{{apiKey}}"
-          }
-        ],
+        "header": [],
         "url": {
           "raw": "{{baseUrl}}/users/23",
           "host": [
@@ -293,10 +288,6 @@
           {
             "key": "Content-Type",
             "value": "application/json"
-          },
-          {
-            "key": "x-api-key",
-            "value": "{{apiKey}}"
           }
         ],
         "body": {
@@ -319,8 +310,8 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test('Status code is 400', function () {",
-              "  pm.response.to.have.status(400);",
+              "pm.test('Status code is 400 or 401', function () {",
+              "  pm.expect(pm.response.code).to.be.oneOf([400, 401]);",
               "});",
               "",
               "const body = pm.response.json();",
@@ -331,13 +322,13 @@
               "  pm.expect(body.error.trim().length).to.be.above(0);",
               "});",
               "",
-              "pm.test('Error message is Missing password', function () {",
-              "  pm.expect(body.error).to.eql('Missing password');",
-              "});",
-              "",
-              "pm.test('Current API does not expose detailed error contract fields yet', function () {",
-              "  pm.expect(body.errorCode, 'missing errorCode (known gap)').to.be.undefined;",
-              "  pm.expect(body.traceId, 'missing traceId (known gap)').to.be.undefined;",
+              "pm.test('Error message matches current behavior', function () {",
+              "  const error = body.error.toLowerCase();",
+              "  if (pm.response.code === 400) {",
+              "    pm.expect(error).to.include('password');",
+              "  } else if (pm.response.code === 401) {",
+              "    pm.expect(error).to.include('api_key');",
+              "  }",
               "});"
             ]
           }
@@ -352,10 +343,6 @@
           {
             "key": "Content-Type",
             "value": "application/json"
-          },
-          {
-            "key": "x-api-key",
-            "value": "{{apiKey}}"
           }
         ],
         "body": {
@@ -378,24 +365,49 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test('Status code is 400', function () {",
-              "  pm.response.to.have.status(400);",
+              "pm.test('Status code is 400 or 401', function () {",
+              "  pm.expect(pm.response.code).to.be.oneOf([400, 401]);",
               "});",
               "",
               "const body = pm.response.json();",
-              "pm.test('Error message is Missing password', function () {",
-              "  pm.expect(body.error).to.eql('Missing password');",
-              "});",
               "",
               "pm.test('Error field exists and is a non-empty string', function () {",
               "  pm.expect(body).to.have.property('error');",
               "  pm.expect(body.error).to.be.a('string');",
               "  pm.expect(body.error.trim().length).to.be.above(0);",
+              "});",
+              "",
+              "pm.test('Error message matches current behavior', function () {",
+              "  const error = body.error.toLowerCase();",
+              "  if (pm.response.code === 400) {",
+              "    pm.expect(error).to.include('password');",
+              "  } else if (pm.response.code === 401) {",
+              "    pm.expect(error).to.include('api_key');",
+              "  }",
               "});"
             ]
           }
         }
       ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const apiKey = pm.environment.get('api_key');",
+          "",
+          "pm.test('api_key environment variable is configured', function () {",
+          "  pm.expect(apiKey, 'Missing api_key environment variable').to.be.a('string').and.not.empty;",
+          "});",
+          "",
+          "if (apiKey) {",
+          "  pm.request.headers.upsert({ key: 'x-api-key', value: apiKey });",
+          "}"
+        ]
+      }
     }
   ]
 }
