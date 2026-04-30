@@ -28,6 +28,8 @@ jobs:
             postman/newman:alpine \
             run collection.json \
             -e environment.json \
+            --env-var apiKey=reqres-free-v1 \
+            --env-var baseUrl=https://reqres.in/api \
             --reporters cli,junit \
             --reporter-junit-export test-results/newman-results.xml
 

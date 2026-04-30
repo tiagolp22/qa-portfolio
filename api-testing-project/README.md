@@ -82,6 +82,8 @@ Un workflow GitHub Actions exécute automatiquement la collection Postman via l�
 
 Fichier: `.github/workflows/api-tests.yml`
 
+Le job CI injecte explicitement `apiKey=reqres-free-v1` et `baseUrl=https://reqres.in/api` via `--env-var` Newman pour éviter les erreurs `missing_api_key` en exécution non interactive.
+
 ### Résolution incident CI (Newman Action)
 
 Si votre pipeline échoue avec l’erreur ci-dessous:
