@@ -44,15 +44,15 @@ api-testing-project/
    - Statut attendu `404`
 2. **POST /register** (payload incomplet)
    - Statut attendu `400`
-   - Message d’erreur attendu: `Missing password`
+   - Message d’erreur attendu: contient `password` (tolérant aux variations de texte)
 3. **POST /login** (payload incomplet)
    - Statut attendu `400`
-   - Message d’erreur attendu: `Missing password`
+   - Message d’erreur attendu: contient `password` (tolérant aux variations de texte)
 
 ## Types de validations implémentées
 
 - Vérification du **status code**
-- Vérification du **temps de réponse** (< 2000 ms)
+- Vérification du **temps de réponse** (< 5000 ms)
 - Vérification de **champs clés** dans le JSON (`id`, `email`, `createdAt`, `updatedAt`)
 - Validation de **schéma JSON** sur les réponses principales (`GET /users`, `POST /users`, `PUT /users`, erreur `POST /register`)
 - Validation d’un message d’erreur pour les cas négatifs
@@ -78,9 +78,11 @@ newman run collection.json -e environment.json
 
 ### Intégration continue (CI)
 
-Un workflow GitHub Actions exécute automatiquement la collection Postman via Newman (installation Node.js + Newman CLI) sur chaque `push` / `pull_request` impactant `api-testing-project/` (et en déclenchement manuel), avec export d’un rapport JUnit en artifact.
+Un workflow GitHub Actions exécute automatiquement la collection Postman via l’image Docker officielle `postman/newman` sur chaque `push` / `pull_request` impactant `api-testing-project/` (et en déclenchement manuel), avec export d’un rapport JUnit en artifact.
 
 Fichier: `.github/workflows/api-tests.yml`
+
+Le job CI injecte explicitement `apiKey=reqres-free-v1` et `baseUrl=https://reqres.in/api` via `--env-var` Newman pour éviter les erreurs `missing_api_key` en exécution non interactive.
 
 ### Résolution incident CI (Newman Action)
 
@@ -90,7 +92,7 @@ Si votre pipeline échoue avec l’erreur ci-dessous:
 Unable to resolve action `matt-ball/newman-action@v2`
 ```
 
-la version `v2` de cette action n’est pas résoluble. Ce projet utilise désormais une approche plus robuste: installation de Node.js et exécution directe de `newman` en CLI dans le workflow (`.github/workflows/api-tests.yml`).
+la version `v2` de cette action n’est pas résoluble. Ce projet utilise désormais une approche plus robuste: exécution via l’image Docker officielle `postman/newman` dans le workflow (`.github/workflows/api-tests.yml`).
 
 
 ## Support entretien / interview

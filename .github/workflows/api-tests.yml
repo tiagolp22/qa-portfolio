@@ -16,27 +16,20 @@ jobs:
     name: Run Postman collection
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: api-testing-project
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Newman
-        run: npm install --global newman
-
-      - name: Run API tests and export JUnit report
+      - name: Run API tests and export JUnit report (Docker)
         run: |
-          mkdir -p test-results
-          newman run collection.json \
+          mkdir -p api-testing-project/test-results
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE/api-testing-project:/etc/newman" \
+            postman/newman:alpine \
+            run collection.json \
             -e environment.json \
+            --env-var apiKey=reqres-free-v1 \
+            --env-var baseUrl=https://reqres.in/api \
             --reporters cli,junit \
             --reporter-junit-export test-results/newman-results.xml
 
